@@ -22,12 +22,14 @@ func New(user, password, host, port, dbName string) (*Postgres, error) {
 
 	db, err := sql.Open(dbDriver, connStr)
 	if err != nil {
-		log.Fatalf("postgres connection failure: %v", err)
+		log.Println("postgres connection failure: %v", err)
+		return nil, err
 	}
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatalf("postgres ping failure: %v", err)
+		log.Println("postgres ping failure: %v", err)
+		return nil, err
 	}
 
 	return &Postgres{db: db}, nil
@@ -36,7 +38,7 @@ func New(user, password, host, port, dbName string) (*Postgres, error) {
 func (this Postgres) Close() {
 	err := this.db.Close()
 	if err != nil {
-		log.Fatalf("postgres close failure: %v", err)
+		log.Println("postgres close failure: %v", err)
 	}
 }
 

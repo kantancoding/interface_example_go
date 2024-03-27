@@ -22,12 +22,14 @@ func New(dbUser, dbPassword, dbHost, dbPort, dbName string) (*Mysql, error) {
 
 	db, err := sql.Open(dbDriver, dsn)
 	if err != nil {
-		log.Fatalf("mysqldb connection failure: %v", err)
+		log.Println("mysqldb connection failure: %v", err)
+		return nil, err
 	}
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatalf("mysqldb ping failure: %v", err)
+		log.Println("mysqldb ping failure: %v", err)
+		return nil, err
 	}
 
 	return &Mysql{db: db}, nil
@@ -36,7 +38,7 @@ func New(dbUser, dbPassword, dbHost, dbPort, dbName string) (*Mysql, error) {
 func (this Mysql) Close() {
 	err := this.db.Close()
 	if err != nil {
-		log.Fatalf("mysqldb close failure: %v", err)
+		log.Println("mysqldb close failure: %v", err)
 	}
 }
 
